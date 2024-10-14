@@ -83,6 +83,19 @@ public readonly struct SmallXXHash4
     {
         this.accumulator = accumulator;
     }
+    public uint4 BytesA => (uint4)this & 255; // 提取 uint4 的最低字节（0-7位）
+    public uint4 BytesB => ((uint4)this >> 8) & 255; // 提取 uint4 的第二个字节（8-15位）
+    public uint4 BytesC => ((uint4)this >> 16) & 255; // 提取 uint4 的第三个字节（16-23位）
+    public uint4 BytesD => (uint4)this >> 24; // 提取 uint4 的最高字节（24-31位）
+
+    // 将 BytesA 的值从 [0, 255] 映射到 [0, 1] 的浮点数
+    public float4 Floats01A => (float4)BytesA * (1f / 255f);
+    // 将 BytesB 的值从 [0, 255] 映射到 [0, 1] 的浮点数
+    public float4 Floats01B => (float4)BytesB * (1f / 255f);
+    // 将 BytesC 的值从 [0, 255] 映射到 [0, 1] 的浮点数
+    public float4 Floats01C => (float4)BytesC * (1f / 255f);
+    // 将 BytesD 的值从 [0, 255] 映射到 [0, 1] 的浮点数
+    public float4 Floats01D => (float4)BytesD * (1f / 255f);
 
 
     // 定义了从 uint 隐式转换为 SmallXXHash 的操作符
